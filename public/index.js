@@ -13,7 +13,7 @@ const svg = d3
   .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // Parse the Data
-d3.json("http://localhost:5001/api").then(function (data) {
+d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (data) {
   let top10 = data.data.slice(0, 10);
 
   // market cap dataset
