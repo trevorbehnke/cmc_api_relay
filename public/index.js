@@ -1,4 +1,4 @@
-d3.json("http://localhost:5001/api").then(function (res) {
+d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (res) {
   let data = res.data.slice(0, 10);
 
   const margin = { top: 10, right: 20, bottom: 60, left: 90 };
