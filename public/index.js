@@ -1,4 +1,4 @@
-d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (res) {
+d3.json("http://localhost:5001/api").then(function (res) {
   let data = res.data.slice(0, 10);
 
   const margin = { top: 10, right: 20, bottom: 60, left: 90 };
@@ -43,11 +43,11 @@ d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (res) {
     .selectAll("mybar")
     .data(data)
     .join("rect")
-    .attr("x", (d) => xScale(d.name))
-    .attr("y", (d) => yScale(d.quote.USD.market_cap))
     .attr("width", xScale.bandwidth())
-    .attr("height", (d) => height - yScale(d.quote.USD.market_cap))
-    .attr("fill", "#69b3a2");
+    .attr("x", (d) => xScale(d.name))
+    .attr("fill", "#69b3a2")
+    .attr("height", () => height - yScale(0))
+    .attr("y", (d) => yScale(0));
 
   // https://codepen.io/bclinkinbeard/pen/gGPvrz
   function responsivefy(svg) {
@@ -69,4 +69,27 @@ d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (res) {
       svg.attr("height", Math.round(targetWidth / aspect));
     }
   }
+
+  // Color Buttons
+  // green button
+  const green_btn = document.getElementById("green_btn");
+  green_btn.addEventListener("click", () => changeColor("green"));
+
+  // purple button
+  const purple_btn = document.getElementById("purple_btn");
+  purple_btn.addEventListener("click", () => changeColor("purple"));
+
+  function changeColor(color) {
+    d3.selectAll("rect").transition().style("fill", color);
+  }
+
+  // Animation
+  svg
+    .selectAll("rect")
+    .transition()
+    .attr("y", (d) => yScale(d.quote.USD.market_cap))
+    .attr("height", (d) => height - yScale(d.quote.USD.market_cap))
+    .delay((d, i) => {
+      return i * 25;
+    });
 });
