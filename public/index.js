@@ -45,7 +45,7 @@ d3.json("http://localhost:5001/api").then(function (res) {
     .join("rect")
     .attr("width", xScale.bandwidth())
     .attr("x", (d) => xScale(d.name))
-    .attr("fill", "#69b3a2")
+    .attr("fill", "#00DAC5")
     .attr("height", () => height - yScale(0))
     .attr("y", (d) => yScale(0));
 
@@ -73,11 +73,11 @@ d3.json("http://localhost:5001/api").then(function (res) {
   // Color Buttons
   // green button
   const green_btn = document.getElementById("green_btn");
-  green_btn.addEventListener("click", () => changeColor("green"));
+  green_btn.addEventListener("click", () => changeColor("#00DAC5"));
 
   // purple button
   const purple_btn = document.getElementById("purple_btn");
-  purple_btn.addEventListener("click", () => changeColor("purple"));
+  purple_btn.addEventListener("click", () => changeColor("#BB86FC"));
 
   function changeColor(color) {
     d3.selectAll("rect").transition().style("fill", color);

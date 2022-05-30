@@ -1,9 +1,10 @@
 body {
-  /* background-color: black;
-  color: white; */
+  background-color: black;
+  color: #ffffff;
+  opacity: 0.87;
 }
 
-.svg-container {
+/* .svg-container {
   display: inline-block;
   position: relative;
   width: 100%;
@@ -16,13 +17,14 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-}
+} */
 
 #chart {
-  background: lightgray;
-  border: 1px solid black;
+  background-color: #121212;
+  border: 1px solid white;
+  border-radius: 5px;
 }
 
-rect {
+/* rect {
   fill: steelblue;
-}
+} */
