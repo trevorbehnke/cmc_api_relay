@@ -29,9 +29,28 @@ d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (res) {
   //  Update Function
   ////////
 
-  function update(data) {
+  function update(set) {
+    //   create a switch statement to determine which data set to use
+    let dataSet;
+    switch (set) {
+      case "mc":
+        dataSet = data.map((d) => ({
+          x: d.name,
+          y: d.quote.USD.market_cap,
+        }));
+        break;
+      case "mp":
+        dataSet = data.map((d) => ({
+          x: d.name,
+          y: d.num_market_pairs,
+        }));
+        break;
+      default:
+        break;
+    }
+
     // Update the X axis
-    xScale.domain(data.map((d) => d.name));
+    xScale.domain(dataSet.map((d) => d.x));
     xAxis
       .call(d3.axisBottom(xScale))
       .selectAll("text")
@@ -39,27 +58,27 @@ d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (res) {
       .style("text-anchor", "end");
 
     // Update the Y axis
-    yScale.domain([0, d3.max(data, (d) => d.quote.USD.market_cap)]);
-    yAxis.transition().duration(1000).call(d3.axisLeft(yScale));
+    yScale.domain([0, d3.max(dataSet, (d) => d.y)]);
+    yAxis.transition().call(d3.axisLeft(yScale));
 
-    var u = svg.selectAll("rect").data(data);
+    let u = svg.selectAll("rect").data(dataSet);
 
     u.join("rect")
       .transition()
-      .attr("x", (d) => xScale(d.name))
-      .attr("y", (d) => yScale(0))
+      .attr("x", (d) => xScale(d.x))
+      .attr("y", () => yScale(0))
       .attr("width", xScale.bandwidth())
       .attr("height", () => height - yScale(0))
-      .attr("fill", "#69b3a2")
+      .attr("fill", "#00DAC5")
       .transition()
-      .attr("y", (d) => yScale(d.quote.USD.market_cap))
-      .attr("height", (d) => height - yScale(d.quote.USD.market_cap))
+      .attr("y", (d) => yScale(d.y))
+      .attr("height", (d) => height - yScale(d.y))
       .delay((d, i) => {
         return i * 25;
       });
   }
 
-  update(data);
+  update("mc");
 
   ////////
   //    Responsive Function
@@ -101,4 +120,16 @@ d3.json("https://cmc-api-relay.herokuapp.com/api").then(function (res) {
   function changeColor(color) {
     d3.selectAll("rect").transition().style("fill", color);
   }
+
+  ////////
+  //    Update Buttons
+  ////////
+
+  // market cap button
+  const market_cap_btn = document.getElementById("market_cap_btn");
+  market_cap_btn.addEventListener("click", () => update("mc"));
+
+  // market pairs button
+  const market_pairs_btn = document.getElementById("market_pairs_btn");
+  market_pairs_btn.addEventListener("click", () => update("mp"));
 });
